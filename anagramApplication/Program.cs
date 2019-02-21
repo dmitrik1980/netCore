@@ -27,7 +27,6 @@ namespace anagramApplication
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             // Code goes here. 
-            
             var dictionary = File.ReadAllLines(args[0], Encoding.GetEncoding(1257));    // Dictionary is "cp-1257"
             // Step 1: Learn Estonian
             //LearnEstonian(dictionary);
@@ -48,10 +47,10 @@ namespace anagramApplication
                     // inputLength == word.Length && HasEnoughChars(word, inputChars) // First, but "inline" check and compute input once.
                     // IsAnagramPrimes(input, word) // Second
                     // inputPrimes == ComputePrimes(word)    //  Second, process input once.
-                    // inputLength == word.Length && inputPrimes == ComputePrimes(word)    // Second, process input once, inline length check. 
+                    // inputLength == word.Length && inputPrimes == ComputePrimes(word)    // [498.404, 9.806] 
                     inputLength == word.Length && (inputLength < MaxLengthForModPrimes
                         ? ModPrimes(inputPrimes, word)
-                        : inputPrimes == ComputePrimes(word)) // [463.983, 9.806]
+                        : inputPrimes == ComputePrimes(word)) // [463.983, 9.806] // Fastest
                 )
                 {
                     anagrams.Add(word);
@@ -116,7 +115,7 @@ namespace anagramApplication
             }
 
             return true;
-        }
+        }    
 
         #endregion
 

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="969d06c0-bbdd-4d52-af39-634ba2580492" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/anagramApplication.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/anagramApplication.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/anagramApplication.sln" beforeDir="false" afterPath="$PROJECT_DIR$/anagramApplication.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analyser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Analyser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <ignored path="obj/" />
     <ignored path="obj/Debug/" />
@@ -17,16 +16,110 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Analyser.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="179">
+              <caret line="113" column="21" lean-forward="true" selection-start-line="113" selection-start-column="21" selection-end-line="113" selection-end-column="21" />
+              <folding>
+                <marker date="1550762590559" expanded="false" signature="6:154" ph="..." />
+                <marker date="1550762590559" expanded="true" signature="184:5299" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="214:5297" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="293:1605" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="707:797" ph="///Max number in single word ... " />
+                <marker date="1550762590559" expanded="true" signature="851:951" ph="///Word with maximum number of occurence ... " />
+                <marker date="1550762590559" expanded="true" signature="1153:1308" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="1355:1595" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="1744:2515" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="1804:1868" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="1926:2505" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="2023:2147" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="2234:2356" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="2413:2491" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="2574:3016" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="2928:3006" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="3034:3199" ph="///Get global list of anagrams. ... " />
+                <marker date="1550762590559" expanded="true" signature="3314:5291" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="3507:4718" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="3716:4704" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="3823:3940" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="3991:4192" ph="/* IsAnagram(w1, w2) ... */" />
+                <marker date="1550762590559" expanded="true" signature="4280:4540" ph="/* w1Len == w2.Length &amp;&amp; (w1Len &lt; Program.MaxLengthForModPrimes ... */" />
+                <marker date="1550762590559" expanded="true" signature="4562:4686" ph="{...}" />
+                <marker date="1550762590559" expanded="true" signature="5034:5145" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Program.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="429">
+              <caret line="52" selection-start-line="52" selection-end-line="52" />
+              <folding>
+                <marker date="1550763968211" expanded="false" signature="6:128" ph="..." />
+                <marker date="1550763968211" expanded="true" signature="158:9755" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="178:9753" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="193:612" ph="///Max string length to be checked using &lt;see cref=&quot;ModPrimes&quot;/&gt; ... " />
+                <marker date="1550763968211" expanded="true" signature="692:870" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="911:2649" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="1157:1276" ph="/* Step 1: Learn Estonian ... */" />
+                <marker date="1550763968211" expanded="true" signature="1663:2503" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="1719:2160" ph="/* IsAnagram(input, word) // First ... */" />
+                <marker date="1550763968211" expanded="true" signature="2413:2489" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="2659:4852" ph="Implementation 1:" />
+                <marker date="1550763968211" expanded="true" signature="2694:2908" ph="///First simple implementation ... " />
+                <marker date="1550763968211" expanded="true" signature="2971:3112" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="3122:3359" ph="///This is first primitive implementation - just count symbols in word. ... " />
+                <marker date="1550763968211" expanded="true" signature="3430:3877" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="3545:3839" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="3653:3731" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="3752:3825" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="3887:4183" ph="/// &lt;summary&gt;&lt;/summary&gt; ... " />
+                <marker date="1550763968211" expanded="true" signature="4274:4828" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="4506:4792" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="4862:9747" ph="Implementation 2" />
+                <marker date="1550763968211" expanded="false" signature="4904:6782" ph="Analyse + Generate multipliers" />
+                <marker date="1550763968211" expanded="true" signature="5109:5344" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="5355:5800" ph="///This is used to examine dictionary and generate array. ... " />
+                <marker date="1550763968211" expanded="true" signature="5874:6762" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="5972:6040" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="6109:6265" ph="/* Code-generation: ... */" />
+                <marker date="1550763968211" expanded="true" signature="6444:6611" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="6792:9728" ph="Primes" />
+                <marker date="1550763968211" expanded="true" signature="6952:8366" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="8377:8512" ph="/// &lt;summary&gt;&lt;/summary&gt; ... " />
+                <marker date="1550763968211" expanded="true" signature="8583:8845" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="8903:9087" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="8979:9049" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="9097:9294" ph="///Check by modulo from primes calculation ... " />
+                <marker date="1550763968211" expanded="true" signature="9357:9708" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="9403:9668" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="9495:9563" ph="{...}" />
+                <marker date="1550763968211" expanded="true" signature="9584:9654" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Analyser.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/anagramApplication.sln" />
         <option value="$PROJECT_DIR$/anagramApplication.csproj" />
+        <option value="$PROJECT_DIR$/Analyser.cs" />
+        <option value="$PROJECT_DIR$/Program.cs" />
       </list>
     </option>
   </component>
@@ -44,8 +137,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="FileSystemExplorer" />
-      <pane id="AssemblyExplorer" />
       <pane id="SolutionExplorer">
         <subPane>
           <expand>
@@ -53,11 +144,18 @@
               <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
               <item name="anagramApplication" type="24d0babc:SolutionExplorerModelNode" />
             </path>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="anagramApplication" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="anagramApplication" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
           </expand>
           <select />
         </subPane>
         <option name="show-all-files" value="false" />
       </pane>
+      <pane id="AssemblyExplorer" />
+      <pane id="FileSystemExplorer" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -142,11 +240,12 @@
       <option name="presentableId" value="Default" />
       <updated>1550751442054</updated>
       <workItem from="1550751443218" duration="1421000" />
+      <workItem from="1550753459878" duration="7876000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1421000" />
+    <option name="totallyTimeSpent" value="9297000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -159,35 +258,36 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Capture Tool" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="NuGet" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Unit Tests" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" sideWeight="0.5021322" side_tool="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Performance Profiler" />
-      <window_info active="true" anchor="bottom" id="Build" sideWeight="0.4978678" visible="true" weight="0.32936078" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Capture Tool" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4978678" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4978678" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Unit Tests Coverage" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info anchor="bottom" id="Performance Profiler" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
+      <window_info anchor="bottom" id="Unit Tests" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="13" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.5021322" side_tool="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.4978678" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="right" id="Errors In Solution" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="6" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +318,89 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analyser.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="113" column="21" lean-forward="true" selection-start-line="113" selection-start-column="21" selection-end-line="113" selection-end-column="21" />
+          <folding>
+            <marker date="1550762590559" expanded="false" signature="6:154" ph="..." />
+            <marker date="1550762590559" expanded="true" signature="184:5299" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="214:5297" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="293:1605" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="707:797" ph="///Max number in single word ... " />
+            <marker date="1550762590559" expanded="true" signature="851:951" ph="///Word with maximum number of occurence ... " />
+            <marker date="1550762590559" expanded="true" signature="1153:1308" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="1355:1595" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="1744:2515" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="1804:1868" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="1926:2505" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="2023:2147" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="2234:2356" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="2413:2491" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="2574:3016" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="2928:3006" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="3034:3199" ph="///Get global list of anagrams. ... " />
+            <marker date="1550762590559" expanded="true" signature="3314:5291" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="3507:4718" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="3716:4704" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="3823:3940" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="3991:4192" ph="/* IsAnagram(w1, w2) ... */" />
+            <marker date="1550762590559" expanded="true" signature="4280:4540" ph="/* w1Len == w2.Length &amp;&amp; (w1Len &lt; Program.MaxLengthForModPrimes ... */" />
+            <marker date="1550762590559" expanded="true" signature="4562:4686" ph="{...}" />
+            <marker date="1550762590559" expanded="true" signature="5034:5145" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+          <folding>
+            <marker date="1550763968211" expanded="false" signature="6:128" ph="..." />
+            <marker date="1550763968211" expanded="true" signature="158:9755" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="178:9753" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="193:612" ph="///Max string length to be checked using &lt;see cref=&quot;ModPrimes&quot;/&gt; ... " />
+            <marker date="1550763968211" expanded="true" signature="692:870" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="911:2649" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="1157:1276" ph="/* Step 1: Learn Estonian ... */" />
+            <marker date="1550763968211" expanded="true" signature="1663:2503" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="1719:2160" ph="/* IsAnagram(input, word) // First ... */" />
+            <marker date="1550763968211" expanded="true" signature="2413:2489" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="2659:4852" ph="Implementation 1:" />
+            <marker date="1550763968211" expanded="true" signature="2694:2908" ph="///First simple implementation ... " />
+            <marker date="1550763968211" expanded="true" signature="2971:3112" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="3122:3359" ph="///This is first primitive implementation - just count symbols in word. ... " />
+            <marker date="1550763968211" expanded="true" signature="3430:3877" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="3545:3839" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="3653:3731" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="3752:3825" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="3887:4183" ph="/// &lt;summary&gt;&lt;/summary&gt; ... " />
+            <marker date="1550763968211" expanded="true" signature="4274:4828" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="4506:4792" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="4862:9747" ph="Implementation 2" />
+            <marker date="1550763968211" expanded="false" signature="4904:6782" ph="Analyse + Generate multipliers" />
+            <marker date="1550763968211" expanded="true" signature="5109:5344" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="5355:5800" ph="///This is used to examine dictionary and generate array. ... " />
+            <marker date="1550763968211" expanded="true" signature="5874:6762" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="5972:6040" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="6109:6265" ph="/* Code-generation: ... */" />
+            <marker date="1550763968211" expanded="true" signature="6444:6611" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="6792:9728" ph="Primes" />
+            <marker date="1550763968211" expanded="true" signature="6952:8366" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="8377:8512" ph="/// &lt;summary&gt;&lt;/summary&gt; ... " />
+            <marker date="1550763968211" expanded="true" signature="8583:8845" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="8903:9087" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="8979:9049" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="9097:9294" ph="///Check by modulo from primes calculation ... " />
+            <marker date="1550763968211" expanded="true" signature="9357:9708" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="9403:9668" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="9495:9563" ph="{...}" />
+            <marker date="1550763968211" expanded="true" signature="9584:9654" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

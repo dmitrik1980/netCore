@@ -106,7 +106,7 @@ namespace anagramApplication
             foreach (var w1 in listA)
             {
                 var w1Len = w1.Length;
-                var w1Chars = Program.CountChars(w1);
+                //var w1Chars = Program.CountChars(w1);
                 var w1Primes = Program.ComputePrimes(w1);
                 foreach (var w2 in listB)
                 {
@@ -116,21 +116,21 @@ namespace anagramApplication
                     }
 
                     if (
-                        //IsAnagram(w1, w2)
-                        //w1Len == w2.Length && HasEnoughChars(w2, w1Chars)
-                        //IsAnagramPrimes(w1, w2)
-                        //w1Primes == ComputePrimes(w2)
-                        //w1Len == w2.Length && w1Primes == Program.ComputePrimes(w2)
-                        w1Len == w2.Length && (w1Len < Program.MaxLengthForModPrimes
-                            ? Program.ModPrimes(w1Primes, w2)
-                            : w1Primes == Program.ComputePrimes(w2))
+//                        Program.IsAnagram(w1, w2)
+//                        w1Len == w2.Length && Program.HasEnoughChars(w2, w1Chars)
+//                        Program.IsAnagramPrimes(w1, w2)
+//                        w1Primes == Program.ComputePrimes(w2)
+//                        w1Len == w2.Length && w1Primes == Program.ComputePrimes(w2)    // [469524, 9806]
+                            w1Len == w2.Length && (w1Len < Program.MaxLengthForModPrimes
+                                ? Program.ModPrimes(w1Primes, w2)
+                                : w1Primes == Program.ComputePrimes(w2))    // [469524, 9806]
                     )
                     {
                         anagrams.Add(new KeyValuePair<string, string>(w1, w2));
                     }
                 }
             }
-
+            stopwatch.Stop();
             Console.WriteLine(stopwatch.ElapsedMilliseconds);
             Console.WriteLine(anagrams.Count);
             var result = anagrams.GroupBy(kv => kv.Key, kv => kv.Value).ToDictionary(i => i.Key, i => i.ToArray());
@@ -138,7 +138,8 @@ namespace anagramApplication
             {
                 Console.WriteLine("{0}: {1}", ap.Key, string.Join(",", ap.Value));
             }
-
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            Console.WriteLine(anagrams.Count);
             return result;
         }
     }
