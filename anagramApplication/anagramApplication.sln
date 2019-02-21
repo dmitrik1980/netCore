@@ -13,5 +13,6 @@ Global
 		{F66C75B1-AF03-44D7-AA87-940C24D8CA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F66C75B1-AF03-44D7-AA87-940C24D8CA7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F66C75B1-AF03-44D7-AA87-940C24D8CA7A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F66C75B1-AF03-44D7-AA87-940C24D8CA7A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

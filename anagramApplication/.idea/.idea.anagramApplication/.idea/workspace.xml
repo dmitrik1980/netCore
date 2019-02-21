@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="969d06c0-bbdd-4d52-af39-634ba2580492" name="Default Changelist" comment="" />
+    <list default="true" id="969d06c0-bbdd-4d52-af39-634ba2580492" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.anagramApplication/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/anagramApplication.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/anagramApplication.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/anagramApplication.sln" beforeDir="false" afterPath="$PROJECT_DIR$/anagramApplication.sln" afterDir="false" />
+    </list>
     <ignored path="obj/" />
     <ignored path="obj/Debug/" />
     <ignored mask="*.cache" />
@@ -17,13 +22,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/obj/Debug/netcoreapp2.1/anagramApplication.AssemblyInfo.cs" root0="FORCE_HIGHLIGHTING" />
-  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/anagramApplication.sln" />
+        <option value="$PROJECT_DIR$/anagramApplication.csproj" />
       </list>
     </option>
   </component>
@@ -76,9 +79,9 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected=".NET Project.Mono">
+  <component name="RunManager" selected=".NET Project.Default">
     <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/netcoreapp2.1/anagramApplication.dll" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Release/netcoreapp2.1/anagramApplication.dll" />
       <option name="PROGRAM_PARAMETERS" value="lemmad.txt rootsi" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -138,12 +141,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550751442054</updated>
-      <workItem from="1550751443218" duration="957000" />
+      <workItem from="1550751443218" duration="1421000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="957000" />
+    <option name="totallyTimeSpent" value="1421000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -212,7 +215,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/anagramApplication.csproj">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
