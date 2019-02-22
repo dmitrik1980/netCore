@@ -10,10 +10,8 @@
       <e p="bin" t="ExcludeRecursive" />
       <e p="lemmad.txt" t="Include" />
       <e p="obj" t="ExcludeRecursive">
-        <e p="Release" t="Include">
-          <e p="netcoreapp2.1" t="Include">
-            <e p="anagramApplication.AssemblyInfo.cs" t="Include" />
-          </e>
+        <e p="Debug" t="Include">
+          <e p="anagramApplication.AssemblyInfo.cs" t="Include" />
         </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />

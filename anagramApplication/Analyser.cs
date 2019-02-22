@@ -47,7 +47,7 @@ namespace anagramApplication
             public override string ToString()
             {
                 return
-                    $"{Occurences}, {MaxInWord} in '{WordWithMax}' ({WordWithMax.Length}), '{LongestWord}' ({LongestWord.Length}) is '{Lower}'/'{Upper}'/'{Ascii}/{Lower == (Upper | 32)}'";
+                    $"{Occurences}, {MaxInWord} in '{WordWithMax}' ({WordWithMax.Length}), '{LongestWord}' ({LongestWord.Length}) is '{Lower}'/'{Upper}'/'{Ascii}/{Lower == (Upper | 32)}', bitsize {(int) Math.Log(MaxInWord, 2)+1}";
             }
         }
 
@@ -93,54 +93,54 @@ namespace anagramApplication
                 action($"{kv.Key} : {kv.Value}");
             }
         }
-        
-        /// <summary>Get global list of anagrams.</summary>
-        /// <param name="listA"></param>
-        /// <param name="listB"></param>
-        /// <returns></returns>
-        internal static Dictionary<string, string[]> FindAll(IEnumerable<string> listA, IEnumerable<string> listB)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            var anagrams = new List<KeyValuePair<string, string>>();
-            foreach (var w1 in listA)
-            {
-                var w1Len = w1.Length;
-                //var w1Chars = Program.CountChars(w1);
-                var w1Primes = Program.ComputePrimes(w1);
-                foreach (var w2 in listB)
-                {
-                    if (string.Compare(w1, w2, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        continue; // Too simple, do not anagram yourself
-                    }
 
-                    if (
-//                        Program.IsAnagram(w1, w2)
-//                        w1Len == w2.Length && Program.HasEnoughChars(w2, w1Chars)
-//                        Program.IsAnagramPrimes(w1, w2)
-//                        w1Primes == Program.ComputePrimes(w2)
-//                        w1Len == w2.Length && w1Primes == Program.ComputePrimes(w2)    // [469524, 9806]
-                            w1Len == w2.Length && (w1Len < Program.MaxLengthForModPrimes
-                                ? Program.ModPrimes(w1Primes, w2)
-                                : w1Primes == Program.ComputePrimes(w2))    // [469524, 9806]
-                    )
-                    {
-                        anagrams.Add(new KeyValuePair<string, string>(w1, w2));
-                    }
-                }
-            }
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.ElapsedMilliseconds);
-            Console.WriteLine(anagrams.Count);
-            var result = anagrams.GroupBy(kv => kv.Key, kv => kv.Value).ToDictionary(i => i.Key, i => i.ToArray());
-            foreach (var ap in result.OrderBy(kv => kv.Key))
+        /// <summary>Get list of prime numbers - google http://mathforum.org/dr.math/faq/faq.prime.num.html</summary>
+        private static int[] _primes =
+        {
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103,
+            107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199
+        };
+
+        /// <summary>This is used to examine dictionary and generate array.</summary>
+        /// <remarks>
+        /// Findings:
+        /// - Totally 37 symbols used.
+        /// - Max same symbol count is 8 for 'i' in 'diskrimineerimispoliitika'
+        /// - Longest word is 'kergejoustiku-meistrivoistlused' with 31 symbols.
+        /// - Max index of Symbol is 382/381, i.e. Ž/ž
+        /// </remarks>
+        /// <param name="dictionary"></param>
+        internal static void CodeGen(IEnumerable<string> dictionary)
+        {
+            var analyser = new Analyser();
+            foreach (var word in dictionary)
             {
-                Console.WriteLine("{0}: {1}", ap.Key, string.Join(",", ap.Value));
+                analyser.Analyse(word);
             }
-            Console.WriteLine(stopwatch.ElapsedMilliseconds);
-            Console.WriteLine(anagrams.Count);
-            return result;
+
+            analyser.PrintResults(Console.WriteLine);
+
+            // Code-generation:
+            // Create array of 382 elements (Ascii) and for each symbol, assign a 'new' prime number, both to Upper and Lower variations
+            var primeEnumerator = _primes.GetEnumerator();
+            int bitNumber = 0;
+            var primesLookup = new long[383];
+            var bitmaskLookup = new long[383];
+            foreach (var s in analyser.Symbols.OrderByDescending(s => s.Value.MaxInWord))
+            {
+                primeEnumerator.MoveNext();
+                primesLookup[s.Value.Upper] = primesLookup[s.Value.Lower] = (int) primeEnumerator.Current;
+                bitmaskLookup[s.Value.Upper] = bitmaskLookup[s.Value.Lower] = 1L << bitNumber;
+                // Guess, why? :) 
+                bitNumber += bitNumber < 36 ? ((int) Math.Log(s.Value.MaxInWord, 2) + 1) : 1;
+            }
+
+            Console.WriteLine("Max prime {0}, bitmask-bit {1}", primeEnumerator.Current, bitNumber);
+            
+            Console.WriteLine("\n\nprivate static readonly ulong[] Primes = { " +
+                              string.Join(",", primesLookup) + " };");
+            Console.WriteLine("\n\nprivate static readonly ulong[] Bitmasks = { " +
+                              string.Join(",", bitmaskLookup) + " };");
         }
     }
 }

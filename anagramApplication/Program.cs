@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace anagramApplication
 {
@@ -19,7 +21,8 @@ namespace anagramApplication
 
         static Program()
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);    // Yes, as this is smth. specific to encoding, put in static class constructor.
+            Encoding.RegisterProvider(CodePagesEncodingProvider
+                .Instance); // Yes, as this is smth. specific to encoding, put in static class constructor.
         }
 
         static void Main(string[] args)
@@ -27,35 +30,61 @@ namespace anagramApplication
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             // Code goes here. 
-            var dictionary = File.ReadAllLines(args[0], Encoding.GetEncoding(1257));    // Dictionary is "cp-1257"
-            // Step 1: Learn Estonian
-            //LearnEstonian(dictionary);
-            // Step 2: FindAll to find best solution
-            //var all = Analyser.FindAll(dictionary, dictionary);
+            var dictionary = File.ReadAllLines(args[0], Encoding.GetEncoding(1257)); // Dictionary is "cp-1257"
 
+            #region Analise + Find All
+            /*
+            // Step 1: Learn some Estonian and Code-Gen
+            Analyser.CodeGen(dictionary);
+            // Step 2: FindAll to find best solution
+            FindAllParallel(dictionary, s => s, IsAnagram); // 2.131.393, 9.806
+            FindAllParallel(dictionary, s => s, IsAnagramPrimes); //   486.151, 9.806
+            FindAllParallel(dictionary, ComputePrimes, (p, w) => p == ComputePrimes(w)); //   465.423, 9.806
+            FindAllParallel(dictionary, ComputeXor,(p, w) => p == ComputeXor(w)); //   465.385, but 89.130 => Too many false positives!
+            FindAllParallel(dictionary, ComputeAdd,(p, w) => p == ComputeAdd(w)); //   460.294, but 16.824/14.090/9.820 => False positives!
+            //foreach (var ap in FindAll(,,).OrderBy(kv => kv.Key)) { Console.WriteLine("{0}: {1}", ap.Key, string.Join(",", ap.Value)); }
             // Step 3: search anagrams as in task
+            */
+            #endregion
+
             var input = args[1];
             var inputLength = input.Length;
-            //var inputChars = CountChars(input);
-            var inputPrimes = ComputePrimes(input);
             var anagrams = new List<string>();
-
-            foreach (var word in dictionary)
+            // Here: parallel-foreach does not help, only overhead. // Parallel.ForEach(dictionary, word=>
+            if (inputLength <= MaxLengthForModPrimes)
             {
-                if (
-                    // IsAnagram(input, word) // First 
-                    // inputLength == word.Length && HasEnoughChars(word, inputChars) // First, but "inline" check and compute input once.
-                    // IsAnagramPrimes(input, word) // Second
-                    // inputPrimes == ComputePrimes(word)    //  Second, process input once.
-                    // inputLength == word.Length && inputPrimes == ComputePrimes(word)    // [498.404, 9.806] 
-                    inputLength == word.Length && (inputLength < MaxLengthForModPrimes
-                        ? ModPrimes(inputPrimes, word)
-                        : inputPrimes == ComputePrimes(word)) // [463.983, 9.806] // Fastest
-                )
+                var inputRes = ComputePrimes(input);
+                foreach (var word in dictionary)
                 {
-                    anagrams.Add(word);
+                    if (
+                        inputLength == word.Length
+                        && inputRes == ComputePrimes(word)
+                        && 0 != string.Compare(input, word,
+                            StringComparison.InvariantCultureIgnoreCase) // Exclude "self"
+                    )
+                    {
+                        anagrams.Add(word);
+                    }
                 }
             }
+            else
+            {
+                var inputRes = ComputeAdd(input);
+                foreach (var word in dictionary)
+                {
+                    if (
+                        inputLength == word.Length
+                        && inputRes == ComputeAdd(word)
+                        && ComputePrimes(input) == ComputePrimes(word) // Filter out 7 collision pairs.
+                        && 0 != string.Compare(input, word,
+                            StringComparison.InvariantCultureIgnoreCase) // Exclude "self"
+                    )
+                    {
+                        anagrams.Add(word);
+                    }
+                }
+            }
+
             Console.Write(stopwatch.ElapsedMilliseconds); // Yes, split ;)
             Console.Write("," + string.Join(",", anagrams));
         }
@@ -115,75 +144,35 @@ namespace anagramApplication
             }
 
             return true;
-        }    
-
-        #endregion
-
-        #region Implementation 2
-        
-        #region Analyse + Generate multipliers
-
-        /// <summary>Get list of prime numbers - google http://mathforum.org/dr.math/faq/faq.prime.num.html</summary>
-        private static int[] _primes =
-        {
-            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103,
-            107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199
-        };
-
-        /// <summary>This is used to examine dictionary and generate array.</summary>
-        /// <remarks>
-        /// Findings:
-        /// - Totally 37 symbols used.
-        /// - Max same symbol count is 8 for 'i' in 'diskrimineerimispoliitika'
-        /// - Longest word is 'kergejoustiku-meistrivoistlused' with 31 symbols.
-        /// - Max index of Symbol is 382/381, i.e. Ž/ž
-        /// </remarks>
-        /// <param name="dictionary"></param>
-        private static void LearnEstonian(IEnumerable<string> dictionary)
-        {
-            var analyser = new Analyser();
-            foreach (var word in dictionary)
-            {
-                analyser.Analyse(word);
-            }
-
-            analyser.PrintResults(Console.WriteLine);
-
-            // Code-generation:
-            // Create array of 382 elements (Ascii) and for each symbol, assign a 'new' prime number, both to Upper and Lower variations
-            var primeEnumerator = _primes.GetEnumerator();
-            var lookup = new int[383];
-            foreach (var s in analyser.Symbols.OrderBy(s => s.Value.Occurences))
-            {
-                primeEnumerator.MoveNext();
-                lookup[s.Value.Upper] = lookup[s.Value.Lower] = (int) primeEnumerator.Current;
-            }
-
-            Console.WriteLine(
-                "\n\nprivate static readonly ulong[] _multipliers = { " + string.Join(",", lookup) + " };");
         }
 
         #endregion
 
+        #region Implementation 2
+
+        #region Analyse + Generate multipliers
+
+        #endregion
+
         #region Primes
-        /// <summary>This is generated from <see cref="LearnEstonian"/>.</summary>
-        private static readonly ulong[] Multipliers =
+
+        /// <summary>This is generated from <see cref="Analyser.CodeGen"/>.</summary>
+        private static readonly ulong[] Primes =
         {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 11, 0,
-            0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 157, 53, 23, 83,
-            149, 43, 73, 79, 151, 61, 113, 127, 103, 107, 101, 97, 5, 109, 139, 137, 131, 89, 7, 13, 17, 19, 0, 0, 0, 0,
-            0,
-            0, 157, 53, 23, 83, 149, 43, 73, 79, 151, 61, 113, 127, 103, 107, 101, 97, 5, 109, 139, 137, 131, 89, 7, 13,
-            17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 5, 0, 0,
+            0, 0, 0, 3, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 137, 43, 37, 59,
+            127, 97, 41, 113, 157, 47, 107, 103, 101, 109, 151, 67, 2, 61, 139, 131, 149, 79, 29, 7, 17, 31, 0, 0, 0, 0,
+            0, 0, 137, 43, 37, 59, 127, 97, 41, 113, 157, 47, 107, 103, 101, 109, 151, 67, 2, 61, 139, 131, 149, 79, 29,
+            7, 17, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 71, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 67, 47, 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 71, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 67, 47, 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 89, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 73, 71, 0, 0, 0, 0, 0, 83, 0, 0, 0, 0,
+            0, 0, 0, 89, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 73, 71, 0, 0, 0, 0, 0, 83, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 31
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 23
         };
+
 
         /// <summary></summary>
         /// <param name="strA"></param>
@@ -203,7 +192,7 @@ namespace anagramApplication
             ulong result = 1;
             foreach (var l in word)
             {
-                result *= Multipliers[l];
+                result *= Primes[l];
             }
 
             return result;
@@ -217,7 +206,7 @@ namespace anagramApplication
         {
             foreach (var l in word)
             {
-                var mul = Multipliers[l];
+                var mul = Primes[l];
                 if (cmp % mul == 0)
                 {
                     cmp /= mul;
@@ -232,6 +221,158 @@ namespace anagramApplication
         }
 
         #endregion
+
+        #region Implementation 3
+
+        /// <summary>This is generated from <see cref="Analyser.CodeGen"/>.</summary>
+        /// <remarks>
+        /// For each symbol I have one bit set in lookup
+        /// Theoretically, this means, if I Xor all symbols, for two words, and results are equal
+        /// - This is anagram.
+        /// - The difference is 2 letters.
+        /// - If length of words is same, I may only have false positives like ('nöör'/'noor' or 'papa'/'mama')
+        /// => Once this check is true, a real <see cref="ComputePrimes"/> should be performed. 
+        /// </remarks>
+        private static readonly ulong[] Bitmasks =
+        {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            2251799813685248, 576460752303423488, 0, 0, 0, 0, 0, 288230376151711744, 0, 0, 0, 0, 0, 9007199254740992, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 281474976710656, 70368744177664, 137438953472,
+            524288, 35184372088832, 140737488355328, 65536, 1, 562949953421312, 2147483648, 268435456, 33554432,
+            17179869184, 8192, 549755813888, 144115188075855872, 274877906944, 128, 4194304, 1024, 4398046511104,
+            36028797018963968, 1152921504606846976, 4503599627370496, 72057594037927936, 0, 0, 0, 0, 0, 0, 16,
+            281474976710656, 70368744177664, 137438953472, 524288, 35184372088832, 140737488355328, 65536, 1,
+            562949953421312, 2147483648, 268435456, 33554432, 17179869184, 8192, 549755813888, 144115188075855872,
+            274877906944, 128, 4194304, 1024, 4398046511104, 36028797018963968, 1152921504606846976, 4503599627370496,
+            72057594037927936, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 17592186044416, 0, 0, 0, 0, 2305843009213693952, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            2199023255552, 1099511627776, 0, 0, 0, 0, 0, 8796093022208, 0, 0, 0, 0, 0, 0, 0, 17592186044416, 0, 0, 0, 0,
+            2305843009213693952, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2199023255552, 1099511627776, 0, 0, 0, 0, 0,
+            8796093022208, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1125899906842624, 1125899906842624, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 18014398509481984, 18014398509481984
+        };
+
+
+        /// <summary>Computing XorBitmask</summary>
+        /// <remarks>Note,</remarks>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        internal static ulong ComputeXor(string word)
+        {
+            ulong result = 1;
+            foreach (var l in word)
+            {
+                result ^= Bitmasks[l];
+            }
+
+            return result;
+        }
+
+        /// <summary>This is generated from <see cref="Analyser.CodeGen"/>.</summary>
+        /// <remarks>
+        /// For each symbol I have one bit set in lookup
+        /// Theoretically, this means, if I Add all symbols, for two words, and results are equal
+        /// - This is anagram.
+        /// - I can have some collisions, but I cannot think out an example, may be there is none!
+        /// </remarks>
+        internal static ulong ComputeAdd(string word)
+        {
+            ulong result = 1;
+            foreach (var l in word)
+            {
+                result += Bitmasks[l];
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Performance
+
+        /// <summary>Get global list of anagrams.</summary>
+        /// <remarks>
+        /// Shall output total number found and time in millis. 
+        /// </remarks>
+        /// <param name="dictionary">Dictionary to look N*N for.</param>
+        /// <param name="prepare">Prepare word for search.</param>
+        /// <param name="compare">Compare</param>
+        /// <returns>List of anagrams found by word.</returns>
+        internal static Dictionary<string, string[]> FindAll<T>(IEnumerable<string> dictionary, Func<string, T> prepare,
+            Func<T, string, bool> compare)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var anagrams = new List<KeyValuePair<string, string>>();
+            foreach (var w1 in dictionary)
+            {
+                var w1Len = w1.Length;
+                T w1p = prepare(w1);
+                foreach (var w2 in dictionary)
+                {
+                    if (
+                        w1Len == w2.Length
+                        && compare(w1p, w2)
+                        && 0 != string.Compare(w1, w2, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                    {
+                        anagrams.Add(new KeyValuePair<string, string>(w1, w2));
+                    }
+                }
+            }
+
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            Console.WriteLine(anagrams.Count);
+            var result = anagrams.GroupBy(kv => kv.Key, kv => kv.Value).ToDictionary(i => i.Key, i => i.ToArray());
+            return result;
+        }
+
+        /// <summary>Get global list of anagrams.</summary>
+        /// <remarks>
+        /// Shall output total number found and time in millis. 
+        /// </remarks>
+        /// <param name="dictionary">Dictionary to look N*N for.</param>
+        /// <param name="prepare">Prepare word for search.</param>
+        /// <param name="compare">Compare</param>
+        /// <returns>List of anagrams found by word.</returns>
+        internal static Dictionary<string, string[]> FindAllParallel<T>(IEnumerable<string> dictionary,
+            Func<string, T> prepare,
+            Func<T, string, bool> compare)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var anagrams = new ConcurrentBag<KeyValuePair<string, string>>();
+            Parallel.ForEach(dictionary, w1 =>
+            {
+                var w1Len = w1.Length;
+                T w1p = prepare(w1);
+                Parallel.ForEach(dictionary, w2 =>
+                {
+                    if (
+                        w1Len == w2.Length
+                        && compare(w1p, w2)
+                        && 0 != string.Compare(w1, w2, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                    {
+                        anagrams.Add(new KeyValuePair<string, string>(w1, w2));
+                    }
+                });
+            });
+
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            Console.WriteLine(anagrams.Count);
+            var result = anagrams.GroupBy(kv => kv.Key, kv => kv.Value).ToDictionary(i => i.Key, i => i.ToArray());
+            return result;
+        }
+
+        #endregion
+
         #endregion
     }
 }
